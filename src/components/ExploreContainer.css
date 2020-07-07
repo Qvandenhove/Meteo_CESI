@@ -22,3 +22,13 @@
 .container a {
   text-decoration: none;
 }
+
+table{
+  width: 100%;
+  text-align: center;
+}
+
+td{
+  border: white solid 0.2px;
+  font-size: 0.9rem
+}
