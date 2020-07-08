@@ -32,3 +32,17 @@ td{
   border: white solid 0.2px;
   font-size: 0.9rem
 }
+
+.modal-wrapper .ion-page{
+  color: white;
+  text-align: center;
+  padding: 0!important;
+  margin: 0!important;
+}
+
+.modal-wrapper{
+  width: 50%!important;
+  height: 5rem!important;
+  position: fixed;
+  bottom: 6%;
+}
