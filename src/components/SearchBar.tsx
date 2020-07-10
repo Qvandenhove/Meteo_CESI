@@ -6,13 +6,11 @@ interface ContainerProps {
     name: string;
 }
 type SearchBarProps = {
-    defaultName: string
     getCurrentWeather: (location) => void
     getForecastWeather : (location) => void
 }
-const SearchBar: React.FC<SearchBarProps> = ({defaultName, getCurrentWeather, getForecastWeather}: SearchBarProps) => {
+const SearchBar: React.FC<SearchBarProps> = ({getCurrentWeather, getForecastWeather}: SearchBarProps) => {
     const [city, setCity] = useState({});
-
     const updateCity = (e: {detail : {value: string}}) => {
         setCity(e.detail.value)
     };

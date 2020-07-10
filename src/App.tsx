@@ -9,6 +9,7 @@ import {
   IonTabButton,
   IonTabs, IonTitle
 } from '@ionic/react';
+import firebase from 'firebase'
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
@@ -34,24 +35,37 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// var firebaseConfig = {
+//   apiKey: "AIzaSyCwl3rvc_1ysFGhWSVN-kz991m_8eC6J-s",
+//   authDomain: "cesi-meteo-4feea.firebaseapp.com",
+//   databaseURL: "https://cesi-meteo-4feea.firebaseio.com",
+//   projectId: "cesi-meteo-4feea",
+//   storageBucket: "cesi-meteo-4feea.appspot.com",
+//   messagingSenderId: "919394823834",
+//   appId: "1:919394823834:web:f265bb3ab7a2c754553923"
+// };
+// firebase.initializeApp(firebaseConfig);
+
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/tab1" component={Tab1} exact={true} />
+          <Route path="/tab1/:city" component={Tab1}/>
           <Route path="/tab2" component={Tab2} exact={true} />
-          <Route path="/tab3" component={Tab3} />
+          <Route path="/tab3" component={Tab3}/>
           <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon icon={triangle} />
-            <IonLabel>Lieu actuel</IonLabel>
+            <IonLabel>Rechercher météo</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon icon={ellipse} />
-            <IonLabel>Liste météo</IonLabel>
+            <IonLabel>Lieu actuel</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
             <IonIcon icon={square} />

@@ -1,10 +1,10 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import './ExploreContainer.css';
-import moment from 'moment'
-import {IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle} from "@ionic/react";
-interface ContainerProps {
-    name: string;
-}
+import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, IonToast} from "@ionic/react";
+import Today from "./Today";
+import NextDays from "./NextDays"
+import helpers from "../helpers/helpers";
+import Tommorow from "./Tomorrow";
 
 type WeatherDetailsProps = {
     currentWeather: any
@@ -12,90 +12,44 @@ type WeatherDetailsProps = {
 }
 
 const WeatherDetail: React.FC<WeatherDetailsProps> = ({currentWeather, forecastWeather}) => {
-    let forecastCards = [];
-    let lastEuroDate;
-    let testDate = new Date();
-    let dayWeather = [];
-    let firstAvailableForecasts = 24 - testDate.getHours();
-    let availableHours = [];
-    for (let hour = testDate.getHours(); hour < 24; hour++){
-        availableHours.push(hour)
-    }
-    if (forecastWeather){
+    const [showToast2, setShowToast2] = useState(false)
 
-        for (let i = 2; i < forecastWeather.daily.length; i++){
-            forecastCards.push(
-            <IonCard color="light" key={i}>
+    if (forecastWeather !== null && currentWeather !== null){
+        return <Fragment>
+            {
+            <IonCard color="light" key={currentWeather.dt}>
                 <IonCardHeader>
                     <IonCardTitle>
-                        Météo à {currentWeather.name} {(testDate.getDate() + 1 + i).toString() + '/' + (testDate.getMonth() + 1).toString()}<br />
-                        {currentWeather.weather[0].main}
+                        Météo à {currentWeather.name} aujourd'hui<br />
+                        <IonCardSubtitle>{forecastWeather.current.weather[0].main}</IonCardSubtitle>
                     </IonCardTitle>
                 </IonCardHeader>
-                <IonCardContent>
-                    Temperature {Math.round(forecastWeather.daily[i].temp.day)}<br />
-                </IonCardContent>
-            </IonCard>)
-        }
-    }
-    return <Fragment>
-        {currentWeather && forecastWeather &&
-        <IonCard color="light" key={0}>
-            <IonCardHeader>
-                <IonCardTitle>
-                    Météo à {currentWeather.name} aujourd'hui<br />
-                    {currentWeather.weather[0].main}
-                </IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>Heure</td>
-                        {availableHours.map(hour => <td>{hour}</td>)}
-                    </tr>
-                    <tr>
-                        <td>Temperature</td>
-                        {forecastWeather.hourly.slice(0, firstAvailableForecasts).map(i => <td>{i.temp}</td>)}
-                    </tr>
-                    <tr>
-                        <td>Prévision</td>
-                        {forecastWeather.hourly.slice(0, firstAvailableForecasts).map(i => <td><img src={"http://openweathermap.org/img/wn/" + i.weather[0].icon + ".png"}/></td>)}
-                    </tr>
-                </tbody>
-                </table>
-                <br />
-                Temps: {currentWeather.weather[0].description}
-            </IonCardContent>
-        </IonCard>
-        }
-        {currentWeather && forecastWeather &&
-        <IonCard color="light" key={1}>
-            <IonCardHeader>
-                <IonCardTitle>
-                    Météo à {currentWeather.name} Demain<br />
-                </IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>Temperature</td>
-                        {forecastWeather.hourly.slice(24 - testDate.getHours(), testDate.getHours() + 24).map(i => <td>{i.temp}</td>)}
-                    </tr>
-                    <tr>
-                        <td>Prévision</td>
-                        {forecastWeather.hourly.slice(24 - testDate.getHours(), testDate.getHours() + 24).map(i => <td><img src={"http://openweathermap.org/img/wn/" + i.weather[0].icon + ".png"}/></td>)}
-                    </tr>
-                    </tbody>
-                </table>
-                <br />
-            </IonCardContent>
-        </IonCard>
-        }
-        {forecastCards.map(i => i)}
+                <Today key={currentWeather.dt} forecastWeather={forecastWeather} city={currentWeather.name}/>
+            </IonCard>
+            }
+            {currentWeather && forecastWeather &&
+            <Tommorow forecastWeather={forecastWeather} city={currentWeather.name}/>
+            }
+            <div>
+                {
 
-    </Fragment>;
+                    forecastWeather.daily.map(i => <NextDays key={i.dt} forecastWeather={i} city={currentWeather.name}/>)}
+            </div>
+            <IonButton onClick={async () => {await helpers.addFavorite(currentWeather.name); setShowToast2(true)}}>Ajouter au Favoris</IonButton>
+            <IonToast
+                isOpen={showToast2}
+                message="Favoris ajouté"
+                position="bottom"
+                color={"success"}
+                duration={3000}
+            />
+        </Fragment>;
+    }else {
+        return <Fragment>
+            Loading
+        </Fragment>;
+    }
+
 };
 
 export default WeatherDetail;

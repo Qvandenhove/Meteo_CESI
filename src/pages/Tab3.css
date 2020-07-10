@@ -1,0 +1,32 @@
+.modal-wrapper{
+    width: 90%!important;
+    overflow: auto!important;
+    height: 80%!important;
+}
+
+.deleteFavorite .modal-wrapper{
+    height: 20% !important;
+    width: 20%!important;
+}
+
+.test{
+
+}
+
+.nextDaysContainer{
+    display: flex;
+    flex-basis: 50%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+
+
+.nextDaysContainer ion-card{
+    width: 45%!important;
+}
+
+ion-card-header{
+    width: 100%!important;
+}
+

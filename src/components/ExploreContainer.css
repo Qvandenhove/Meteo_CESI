@@ -39,10 +39,3 @@ td{
   padding: 0!important;
   margin: 0!important;
 }
-
-.modal-wrapper{
-  width: 50%!important;
-  height: 5rem!important;
-  position: fixed;
-  bottom: 6%;
-}
